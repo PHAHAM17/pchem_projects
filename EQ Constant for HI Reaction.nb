@@ -1,0 +1,905 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     30462,        897]
+NotebookOptionsPosition[     29827,        878]
+NotebookOutlinePosition[     30179,        894]
+CellTagsIndexPosition[     30136,        891]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["\<\
+This program uses statistical mechanics to find the equillibrium constant of \
+the reaction of H2 and I2 to form 2HI\
+\>", "Text",
+ CellChangeTimes->{{3.7367012215878468`*^9, 3.7367013187403297`*^9}, {
+   3.736701381124102*^9, 3.736701394690214*^9}, {3.7367020671366577`*^9, 
+   3.736702185108959*^9}, {3.7367022849071074`*^9, 3.7367022975904703`*^9}, {
+   3.7367023483742857`*^9, 3.7367023560177526`*^9}, {3.736709396555681*^9, 
+   3.736709399783504*^9}, 3.736712645965602*^9, {3.736713064618927*^9, 
+   3.736713072724061*^9}, {3.73671310704045*^9, 3.7367132686388073`*^9}, {
+   3.736713305752144*^9, 3.736713526891127*^9}, {3.736713644055793*^9, 
+   3.736713651022933*^9}, {3.736713702418565*^9, 3.736713715186969*^9}, {
+   3.7367137583657217`*^9, 3.736713836479384*^9}, {3.73671413307087*^9, 
+   3.7367144091375427`*^9}, {3.736714514052903*^9, 3.736714538792761*^9}, {
+   3.736714579022841*^9, 3.736714607658972*^9}, {3.736714637747258*^9, 
+   3.736714792772732*^9}, {3.736714824480728*^9, 3.7367148315809383`*^9}, {
+   3.736714894731583*^9, 3.7367149146500883`*^9}, {3.7367149660301533`*^9, 
+   3.736714998010603*^9}, {3.736715073576528*^9, 3.736715073838236*^9}, {
+   3.736715149884962*^9, 3.736715241354495*^9}, {3.7367153409606447`*^9, 
+   3.736715348339534*^9}, {3.736715379462422*^9, 3.736715567983425*^9}, {
+   3.736715632725376*^9, 3.736715905306614*^9}, {3.7367160181926403`*^9, 
+   3.736716110554186*^9}, {3.736716162936122*^9, 3.736716309581933*^9}, {
+   3.7367163693117332`*^9, 3.736716535385735*^9}, {3.73671657886335*^9, 
+   3.736716608864684*^9}, {3.736716656724927*^9, 3.7367167357820597`*^9}, {
+   3.736716864103791*^9, 3.73671699918896*^9}, {3.736717038379418*^9, 
+   3.736717043211671*^9}, {3.736717088633634*^9, 3.7367170914223347`*^9}, {
+   3.7367171403548193`*^9, 3.7367172487987347`*^9}, {3.736717301695746*^9, 
+   3.73671749751307*^9}, {3.7367175489662333`*^9, 3.736717580559099*^9}, {
+   3.736797506368288*^9, 3.73679755871381*^9}, {3.736797600283147*^9, 
+   3.736797681696151*^9}, {3.7367977221354017`*^9, 3.7367978070531178`*^9}, 
+   3.736824710175721*^9, {3.755229551565361*^9, 
+   3.755229623867423*^9}},ExpressionUUID->"60aea4e4-aa5b-488b-a2c9-\
+ee738a896cc9"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"dataHI", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"m", "\[Rule]", 
+      RowBox[{"127.9125", "/", "2"}]}], ",", 
+     RowBox[{"ev", "\[Rule]", " ", "2309.5"}], 
+     RowBox[{"(*", 
+      RowBox[{"vibr", " ", "energy", " ", "in", " ", 
+       SuperscriptBox["cm", 
+        RowBox[{"-", "1"}]]}], "*)"}], ",", " ", 
+     RowBox[{"D0", "\[Rule]", "3.056"}], 
+     RowBox[{"(*", 
+      RowBox[{"disociation", " ", "energy", " ", "in", " ", "eV"}], "*)"}], 
+     ",", 
+     RowBox[{"B", "\[Rule]", "6.551"}]}], " ", 
+    RowBox[{"(*", 
+     RowBox[{"rotational", " ", "constant", " ", "in", " ", 
+      SuperscriptBox["cm", 
+       RowBox[{"-", "1"}]]}], "*)"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataH2", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"m", "\[Rule]", " ", "1.0080"}], 
+     RowBox[{"(*", "amu", "*)"}], ",", 
+     RowBox[{"ev", "\[Rule]", "4359.0"}], " ", 
+     RowBox[{"(*", 
+      SuperscriptBox["cm", 
+       RowBox[{"-", "1"}]], "*)"}], ",", 
+     RowBox[{"D0", "\[Rule]", " ", "4.476"}], 
+     RowBox[{"(*", "eV", "*)"}], ",", 
+     RowBox[{"B", "\[Rule]", "29.79"}]}], 
+    RowBox[{"(*", 
+     SuperscriptBox["cm", 
+      RowBox[{"-", "1"}]], "*)"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataI2", "=", 
+   RowBox[{"{", " ", 
+    RowBox[{
+     RowBox[{"m", "->", "126.9045"}], " ", 
+     RowBox[{"(*", "amu", "*)"}], ",", 
+     RowBox[{"ev", "\[Rule]", " ", "214.57"}], 
+     RowBox[{"(*", 
+      SuperscriptBox["cm", 
+       RowBox[{"-", "1"}]], "*)"}], ",", 
+     RowBox[{"D0", "\[Rule]", " ", "1.540"}], " ", 
+     RowBox[{"(*", "eV", "*)"}], ",", 
+     RowBox[{"B", "\[Rule]", " ", "0.037"}]}], 
+    RowBox[{"(*", 
+     SuperscriptBox["cm", 
+      RowBox[{"-", "1"}]], "*)"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "\[CapitalLambda]d", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[CapitalLambda]d", "[", 
+   RowBox[{"T_", ",", "data_List"}], "]"}], ":=", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"kB", "=", 
+       RowBox[{"1.3806", " ", 
+        RowBox[{"10", "^", 
+         RowBox[{"(", 
+          RowBox[{"-", "16"}], ")"}]}]}]}], " ", 
+      RowBox[{"(*", 
+       RowBox[{"erg", "/", "K"}], "*)"}], ",", "\n", 
+      "\t\t\t                                       ", 
+      RowBox[{"m0", "=", 
+       RowBox[{"1.6605", " ", 
+        RowBox[{"10", "^", 
+         RowBox[{"(", 
+          RowBox[{"-", "24"}], ")"}]}]}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+      RowBox[{"h", "=", 
+       RowBox[{"2", " ", "Pi", " ", "1.0546", " ", 
+        RowBox[{"10", "^", 
+         RowBox[{"(", 
+          RowBox[{"-", "27"}], ")"}]}]}]}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Sqrt", "[", 
+      RowBox[{
+       RowBox[{"h", "^", "2"}], "/", 
+       RowBox[{"(", " ", 
+        RowBox[{"2", " ", "Pi", " ", "2", " ", "m", 
+         StyleBox[
+          RowBox[{" ", 
+           StyleBox[" ",
+            FontColor->RGBColor[1, 0, 0]]}]], "m0", "  ", "kB", "  ", "T"}], 
+        ")"}]}], "]"}], " ", "/.", "data"}]}], " ", 
+   RowBox[{"(*", 
+    RowBox[{"gives", " ", "\[CapitalLambda]", " ", "in", " ", 
+     SuperscriptBox["cm", 
+      RowBox[{"-", "1"}]]}], "*)"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "Zd", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Zd", "[", 
+    RowBox[{"T_", ",", "p_", 
+     RowBox[{"(*", "atm", "*)"}], ",", "dataDiatomic_List"}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", " ", 
+      RowBox[{
+       RowBox[{"R", "=", "82.0578"}], " ", 
+       RowBox[{"(*", 
+        RowBox[{"atm", " ", 
+         RowBox[{
+          RowBox[{"cm", "^", "3"}], "/", "K"}], " ", "mol"}], "*)"}], ",", 
+       "\[IndentingNewLine]", "                 ", 
+       RowBox[{"NA", "=", 
+        RowBox[{"6.022", " ", 
+         RowBox[{"10", "^", "23"}]}]}]}], " ", "}"}], ",", "\n", "\t\t\t", 
+     RowBox[{"R", " ", 
+      RowBox[{"T", "/", 
+       RowBox[{"(", 
+        RowBox[{"NA", " ", 
+         RowBox[{
+          RowBox[{"\[CapitalLambda]d", "[", 
+           RowBox[{"T", ",", "dataDiatomic"}], "]"}], "^", "3"}], " ", "p"}], 
+        ")"}]}]}]}], "]"}]}], "       "}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "Kt", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Kt", "[", 
+   RowBox[{"T_", ",", "p_", 
+    RowBox[{"(*", 
+     RowBox[{"in", " ", "Atm"}], "*)"}], ",", "dataAtom1_List", ",", 
+    "dataAtom2_List", ",", "dataAtom3_List"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "  ", "}"}], ",", "\n", "\t\t\t ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Zd", "[", 
+       RowBox[{"T", ",", "p", ",", "dataAtom1"}], "]"}], "^", "2"}], "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Zd", "[", 
+        RowBox[{"T", ",", "p", ",", "dataAtom2"}], "]"}], "*", 
+       RowBox[{"Zd", "[", 
+        RowBox[{"T", ",", "p", ",", "dataAtom3"}], "]"}]}], ")"}]}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "vibTemp", "]"}], "\n", 
+ RowBox[{
+  RowBox[{"vibTemp", "[", "data_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"kB", "=", "0.0000861771"}], " ", 
+      RowBox[{"(*", "eV", "*)"}], ",", 
+      RowBox[{"conv", "=", 
+       RowBox[{"1.2398", "*", 
+        RowBox[{"10", "^", 
+         RowBox[{"(", 
+          RowBox[{"-", "4"}], ")"}]}]}]}]}], "}"}], ",", 
+    RowBox[{
+     RowBox[{"ev", "*", 
+      RowBox[{"conv", "/", "kB"}]}], "/.", "data"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "qv", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"qv", "[", 
+    RowBox[{"T_", ",", "data_List"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"kB", "=", "0.0000861771"}], " ", 
+        RowBox[{"(*", "eV", "*)"}], ",", "Tv"}], "}"}], ",", 
+      RowBox[{
+       RowBox[{"Tv", "=", 
+        RowBox[{"vibTemp", "[", "data", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Exp", "[", 
+         RowBox[{"D0", "/", 
+          RowBox[{"(", 
+           RowBox[{"kB", "*", "T"}], ")"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          RowBox[{"Exp", "[", 
+           RowBox[{
+            RowBox[{"-", "Tv"}], "/", "T"}], "]"}]}], ")"}]}]}]}], "]"}], "/.",
+     "data"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Kv", "[", 
+   RowBox[{
+   "T_", ",", "dataAtom1_List", ",", "dataAtom2_List", ",", 
+    "dataAtom3_List"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "  ", "}"}], ",", "\n", "\t\t\t ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"qv", "[", 
+       RowBox[{"T", ",", " ", "dataAtom1"}], "]"}], "^", "2"}], "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"qv", "[", 
+        RowBox[{"T", ",", " ", "dataAtom2"}], "]"}], "*", 
+       RowBox[{"qv", "[", 
+        RowBox[{"T", ",", "dataAtom3"}], "]"}]}], ")"}]}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "qrhomo", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"qrhomo", "[", 
+    RowBox[{"T_", ",", "datahomoDiatomic_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"kB", "=", "0.6951"}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"T", "/", 
+       RowBox[{"(", 
+        RowBox[{"2", " ", 
+         RowBox[{"B", "/", "kB"}]}], ")"}]}], "/.", "datahomoDiatomic"}]}], 
+    "\n", "\t", 
+    RowBox[{"(*", 
+     RowBox[{"for", " ", "homonuclear", " ", "only"}], "*)"}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "qrhetero", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"qrhetero", "[", 
+    RowBox[{"T_", ",", "dataheteroDiatomic_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"kB", "=", "0.6951"}], " ", "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"T", "/", 
+       RowBox[{"(", " ", 
+        RowBox[{"B", "/", "kB"}], ")"}]}], "/.", "dataheteroDiatomic"}]}], 
+    "\n", "\t", 
+    RowBox[{"(*", 
+     RowBox[{"for", " ", "heteronuclear", " ", "only"}], "*)"}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Krot", "[", 
+   RowBox[{
+   "T_", ",", "dataAtom1_List", ",", "dataAtom2_List", ",", 
+    "dataAtom3_List"}], "]"}], ":=", "\n", "\t\t\t\t ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"qrhetero", "[", 
+     RowBox[{"T", ",", " ", "dataAtom1"}], "]"}], "^", "2"}], "/", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"qrhomo", "[", 
+      RowBox[{"T", ",", " ", "dataAtom2"}], "]"}], "*", 
+     RowBox[{"qrhomo", "[", 
+      RowBox[{"T", ",", "dataAtom3"}], "]"}]}], 
+    ")"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Ktot", "[", 
+    RowBox[{
+    "T_", ",", "dataAtom1_List", ",", "dataAtom2_List", ",", 
+     "dataAtom3_List"}], "]"}], ":=", "\n", "\t\t\t\t ", 
+   RowBox[{
+    RowBox[{"Kt", "[", 
+     RowBox[{
+     "T", ",", "1", ",", " ", "dataAtom1", ",", " ", "dataAtom2", ",", " ", 
+      "dataAtom3"}], "]"}], "*", 
+    RowBox[{"Kv", "[", 
+     RowBox[{
+     "T", ",", " ", "dataAtom1", ",", " ", "dataAtom2", ",", " ", 
+      "dataAtom3"}], "]"}], "*", 
+    RowBox[{"Krot", "[", 
+     RowBox[{
+     "T", ",", " ", "dataAtom1", ",", " ", "dataAtom2", ",", " ", 
+      "dataAtom3"}], "]"}]}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TableForm", "[", 
+   RowBox[{
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"T", ",", 
+        RowBox[{"Kt", "[", 
+         RowBox[{
+         "T", ",", "1", ",", "dataHI", ",", " ", "dataH2", ",", " ", 
+          "dataI2"}], "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"T", ",", "100", ",", "2100", ",", "200"}], "}"}]}], "]"}], 
+    ",", "\n", "\t", 
+    RowBox[{"TableHeadings", "->", 
+     RowBox[{"{", 
+      RowBox[{"None", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<T K\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(K\), \(t\)]\) for HI\>\""}], "}"}]}], 
+      "}"}]}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TableForm", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"T", ",", 
+        RowBox[{"Kv", "[", 
+         RowBox[{"T", ",", " ", "dataHI", ",", "dataH2", ",", " ", "dataI2"}],
+          "]"}]}], "}"}], ",", "\n", "\t\t", 
+      RowBox[{"{", 
+       RowBox[{"T", ",", "100", ",", "2000", ",", "200"}], "}"}]}], "]"}], 
+    ",", "\n", "\t", 
+    RowBox[{"TableHeadings", "->", 
+     RowBox[{"{", 
+      RowBox[{"None", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<T\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(K\), \(V\)]\) for HI\>\""}], "}"}]}], 
+      "}"}]}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TableForm", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"T", ",", 
+        RowBox[{"Krot", "[", 
+         RowBox[{"T", ",", " ", "dataHI", ",", "dataH2", ",", " ", "dataI2"}],
+          "]"}]}], "}"}], ",", "\n", "\t\t", 
+      RowBox[{"{", 
+       RowBox[{"T", ",", "100", ",", "2000", ",", "200"}], "}"}]}], "]"}], 
+    ",", "\n", "\t", 
+    RowBox[{"TableHeadings", "->", 
+     RowBox[{"{", 
+      RowBox[{"None", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<T\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(K\), \(r\)]\) for HI\>\""}], "}"}]}], 
+      "}"}]}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TableForm", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"T", ",", 
+        RowBox[{"Ktot", "[", 
+         RowBox[{"T", ",", " ", "dataHI", ",", "dataH2", ",", " ", "dataI2"}],
+          "]"}]}], "}"}], ",", "\n", "\t\t", 
+      RowBox[{"{", 
+       RowBox[{"T", ",", "100", ",", "2000", ",", "100"}], "}"}]}], "]"}], 
+    ",", "\n", "\t", 
+    RowBox[{"TableHeadings", "->", 
+     RowBox[{"{", 
+      RowBox[{"None", ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<T\>\"", ",", "\"\<K for HI\>\""}], "}"}]}], "}"}]}]}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"TableForm", "[", "\n", "\t", 
+  RowBox[{
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"T", ",", 
+       RowBox[{"ScientificForm", "[", 
+        RowBox[{"NumberForm", "[", 
+         RowBox[{
+          RowBox[{"Kt", "[", 
+           RowBox[{
+           "T", ",", "1", ",", "dataHI", ",", " ", "dataH2", ",", " ", 
+            "dataI2"}], "]"}], ",", "6"}], "]"}], "]"}], ",", 
+       RowBox[{"ScientificForm", "[", 
+        RowBox[{"NumberForm", "[", 
+         RowBox[{
+          RowBox[{"Kv", "[", 
+           RowBox[{
+           "T", ",", " ", "dataHI", ",", "dataH2", ",", " ", "dataI2"}], 
+           "]"}], ",", "6"}], "]"}], "]"}], ",", 
+       RowBox[{"ScientificForm", "[", 
+        RowBox[{"NumberForm", "[", 
+         RowBox[{
+          RowBox[{"Krot", "[", 
+           RowBox[{
+           "T", ",", " ", "dataHI", ",", "dataH2", ",", " ", "dataI2"}], 
+           "]"}], ",", "6"}], "]"}], "]"}], ",", "\n", "\t\t", 
+       RowBox[{"ScientificForm", "[", 
+        RowBox[{"NumberForm", "[", 
+         RowBox[{
+          RowBox[{"Ktot", "[", 
+           RowBox[{
+           "T", ",", " ", "dataHI", ",", "dataH2", ",", " ", "dataI2"}], 
+           "]"}], ",", "6"}], "]"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"{", 
+      RowBox[{"T", ",", "100", ",", "2200", ",", "200"}], "}"}]}], "]"}], ",",
+    "\n", "\t", 
+   RowBox[{"TableHeadings", "->", 
+    RowBox[{"{", 
+     RowBox[{"None", ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<T in K\>\"", ",", 
+        "\"\<\!\(\*SubscriptBox[\(K\), \(t\)]\) for HI\>\"", ",", " ", 
+        "\"\<\!\(\*SubscriptBox[\(K\), \(v\)]\) for HI\>\"", ",", 
+        "\"\<\!\(\*SubscriptBox[\(K\), \(r\)]\) for HI\>\"", ",", 
+        "\"\<K for HI\>\""}], "}"}]}], "}"}]}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.7367012215878468`*^9, 3.7367013187403297`*^9}, {
+   3.736701381124102*^9, 3.736701394690214*^9}, {3.7367020671366577`*^9, 
+   3.736702185108959*^9}, {3.7367022849071074`*^9, 3.7367022975904703`*^9}, {
+   3.7367023483742857`*^9, 3.7367023560177526`*^9}, {3.736709396555681*^9, 
+   3.736709399783504*^9}, 3.736712645965602*^9, {3.736713064618927*^9, 
+   3.736713072724061*^9}, {3.73671310704045*^9, 3.7367132686388073`*^9}, {
+   3.736713305752144*^9, 3.736713526891127*^9}, {3.736713644055793*^9, 
+   3.736713651022933*^9}, {3.736713702418565*^9, 3.736713715186969*^9}, {
+   3.7367137583657217`*^9, 3.736713836479384*^9}, {3.73671413307087*^9, 
+   3.7367144091375427`*^9}, {3.736714514052903*^9, 3.736714538792761*^9}, {
+   3.736714579022841*^9, 3.736714607658972*^9}, {3.736714637747258*^9, 
+   3.736714792772732*^9}, {3.736714824480728*^9, 3.7367148315809383`*^9}, {
+   3.736714894731583*^9, 3.7367149146500883`*^9}, {3.7367149660301533`*^9, 
+   3.736714998010603*^9}, {3.736715073576528*^9, 3.736715073838236*^9}, {
+   3.736715149884962*^9, 3.736715241354495*^9}, {3.7367153409606447`*^9, 
+   3.736715348339534*^9}, {3.736715379462422*^9, 3.736715567983425*^9}, {
+   3.736715632725376*^9, 3.736715905306614*^9}, {3.7367160181926403`*^9, 
+   3.736716110554186*^9}, {3.736716162936122*^9, 3.736716309581933*^9}, {
+   3.7367163693117332`*^9, 3.736716535385735*^9}, {3.73671657886335*^9, 
+   3.736716608864684*^9}, {3.736716656724927*^9, 3.7367167357820597`*^9}, {
+   3.736716864103791*^9, 3.73671699918896*^9}, {3.736717038379418*^9, 
+   3.736717043211671*^9}, {3.736717088633634*^9, 3.7367170914223347`*^9}, {
+   3.7367171403548193`*^9, 3.7367172487987347`*^9}, {3.736717301695746*^9, 
+   3.73671749751307*^9}, {3.7367175489662333`*^9, 3.736717580559099*^9}, {
+   3.736797506368288*^9, 3.73679755871381*^9}, {3.736797600283147*^9, 
+   3.736797681696151*^9}, {3.7367977221354017`*^9, 3.7367978070531178`*^9}, 
+   3.736824710175721*^9, {3.755229551565361*^9, 
+   3.7552295608241243`*^9}},ExpressionUUID->"c7fa84a2-5894-4ca7-b95d-\
+8df562bb2526"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {
+      TagBox["\<\"T in K\"\>",
+       HoldForm], 
+      TagBox["\<\"\\!\\(\\*SubscriptBox[\\(K\\), \\(t\\)]\\) for HI\"\>",
+       HoldForm], 
+      TagBox["\<\"\\!\\(\\*SubscriptBox[\\(K\\), \\(v\\)]\\) for HI\"\>",
+       HoldForm], 
+      TagBox["\<\"\\!\\(\\*SubscriptBox[\\(K\\), \\(r\\)]\\) for HI\"\>",
+       HoldForm], 
+      TagBox["\<\"K for HI\"\>",
+       HoldForm]},
+     {"100", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.8184086371275,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"65718.4\"\>",
+         65718.43643366464,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636538`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox[
+         RowBox[{"\<\"1.22081\"\>", "\[Times]", 
+          SuperscriptBox["10", "\<\"6\"\>"]}],
+         1.2208066454304806`*^6,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"300", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.8184086371275,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"26.341\"\>",
+         26.34100968079512,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636541`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"489.319\"\>",
+         489.3190010404838,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"500", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712756`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"4.28641\"\>",
+         4.286411502264044,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636541`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"79.6257\"\>",
+         79.62574782642007,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"700", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712756`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"1.78173\"\>",
+         1.781726309533752,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636541`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"33.0979\"\>",
+         33.097916460819846`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"900", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.8184086371275,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"1.05197\"\>",
+         1.0519690406998103`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636538`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"19.5417\"\>",
+         19.541712575127416`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"1100", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712756`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.742022\"\>",
+         0.7420224844605626,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.1027346675163654,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"13.784\"\>",
+         13.784046444906833`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"1300", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712756`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.5806\"\>",
+         0.5805998908571501,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.1027346675163654,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"10.7854\"\>",
+         10.785408837443583`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"1500", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712742`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.485003\"\>",
+         0.48500286389186364`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636541`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"9.00957\"\>",
+         9.009567960273293,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"1700", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712753`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.423154\"\>",
+         0.42315365995136744`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636541`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"7.86064\"\>",
+         7.860637412277719,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"1900", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712748`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.380474\"\>",
+         0.38047428611976897`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636541`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"7.06781\"\>",
+         7.06781174532778,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]},
+     {"2100", 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"180.818\"\>",
+         180.81840863712753`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.349547\"\>",
+         0.34954673511580514`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"0.102735\"\>",
+         0.10273466751636537`,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm], 
+      TagBox[
+       TagBox[
+        InterpretationBox["\<\"6.49329\"\>",
+         6.493291689138674,
+         AutoDelete->True],
+        NumberForm[#, 6]& ],
+       ScientificForm]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxDividers->{
+     "Columns" -> {{False}}, "ColumnsIndexed" -> {}, 
+      "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[2.0999999999999996`]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   {None, OutputFormsDump`HeadedColumns}],
+  Function[BoxForm`e$, 
+   TableForm[
+   BoxForm`e$, 
+    TableHeadings -> {
+     None, {"T in K", "\!\(\*SubscriptBox[\(K\), \(t\)]\) for HI", 
+       "\!\(\*SubscriptBox[\(K\), \(v\)]\) for HI", 
+       "\!\(\*SubscriptBox[\(K\), \(r\)]\) for HI", "K for HI"}}]]]], "Output",\
+
+ CellChangeTimes->{3.7368247591683283`*^9},
+ CellLabel->
+  "Out[296]//TableForm=",ExpressionUUID->"2c030368-aab2-4212-8368-\
+9eccc4bf5692"]
+}, Open  ]],
+
+Cell[TextData[{
+ "Vibrational motion is the only one that varies with temperature, and Kt and \
+Kr do not because the assume some form of ",
+ Cell[BoxData[
+  FormBox[
+   SuperscriptBox["q", "2"], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "944b69cb-6120-4d23-baf5-9b143acbdff6"],
+ "/(q*q), and q is proportional with temperature. It also makes sense from a \
+qualitative standpoint. The size and dipole difference between H and I in HI \
+is large, and it should depend on temperature because of this difference. The \
+nuclear contribution should be nothing, because the moles of gas stay the \
+same on the left and on the right. The K for HI decreases with temperature, \
+which makes sense, as the relatively high stability of H2 and I2 win out at \
+higher temperatures, and the vibrational instability of HI gives rise to more \
+H2 and I2 at higher temperatures."
+}], "Subsection",
+ CellChangeTimes->{{3.736824753835515*^9, 
+  3.736824966357163*^9}},ExpressionUUID->"2f59ebee-fbbf-4daa-965f-\
+2d85c2e0c988"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{5, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2203, 32, 35, "Text",ExpressionUUID->"60aea4e4-aa5b-488b-a2c9-ee738a896cc9"],
+Cell[CellGroupData[{
+Cell[2786, 56, 16107, 435, 1433, "Input",ExpressionUUID->"c7fa84a2-5894-4ca7-b95d-8df562bb2526"],
+Cell[18896, 493, 9877, 361, 234, "Output",ExpressionUUID->"2c030368-aab2-4212-8368-9eccc4bf5692"]
+}, Open  ]],
+Cell[28788, 857, 1035, 19, 270, "Subsection",ExpressionUUID->"2f59ebee-fbbf-4daa-965f-2d85c2e0c988"]
+}
+]
+*)
+
